@@ -5,6 +5,14 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ The Customer class represents a customer object.
+ It has properties such as id, first name, last name, middle name, email, phone number and birth date.
+ This class is annotated with JPA annotations to define the mapping to the database.
+ @author [getabalew7]
+ @version 1.0
+ @since [05-05-2023]
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +20,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

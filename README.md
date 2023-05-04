@@ -154,8 +154,7 @@ To run this micro-service locally, follow these steps:
 ```
 ## All the Endpoints are  the follwoing
 # Customer Entity
-``` http request
-     
+```      
     ### create customers
     POST http://localhost:8080/api/customers
     
@@ -184,7 +183,7 @@ To run this micro-service locally, follow these steps:
     GET http://localhost:8080/api/quotation/{{quotationId}}/subscription
     ### get subscription
     GET http://localhost:8080/api/subscription
-   ```
+
 # Quotation Entity
 
 ``` http request

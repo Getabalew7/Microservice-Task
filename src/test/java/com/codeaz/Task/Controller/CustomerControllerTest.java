@@ -32,7 +32,6 @@ class CustomerControllerTest {
     @Mock
     private CustomerServiceImplementation customerService;
 
-
     @Test
     void itShouldCreateCustomerSuccessfully() {
         // Arrange
