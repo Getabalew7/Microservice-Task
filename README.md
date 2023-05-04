@@ -1,5 +1,5 @@
 ## Spring Boot Micro-service for Customer Quotation and Subscription Management
-This is a micro-service for managing Quotations and Subscriptions using Spring Boot framework and H2 database.
+This is a micro-service task for managing Customer Quotations and Subscriptions using Spring Boot framework and H2 database.
 
 ## Prerequisites
 JDK 1.8 or later
@@ -7,7 +7,7 @@ Maven 3.2+
 ##  Getting Started
 To run this micro-service locally, follow these steps:
 
-1.  Clone the repository from https
+1.  Clone the repository from [Getabalew7](https://github.com/Getabalew7/Microservice-Task.git)
 
 2.  Navigate to the project directory
 
@@ -152,6 +152,60 @@ To run this micro-service locally, follow these steps:
   "birthDate": "1990-01-01"
 }
 ```
+## All the Endpoints are  the follwoing
+# Customer Entity
+``` http request
+     
+    ### create customers
+    POST http://localhost:8080/api/customers
+    
+    ### get all customer
+    GET http://localhost:8080/api/customers
+    
+    ### get customers by customer id
+    GET http://localhost:8080/api/customers/{{id}}
+    
+    ### update customer details
+    PUT http://localhost:8080/api/customers/{{id}}
+    
+    ### delete customer
+    DELETE http://localhost:8080/api/customers/{{id}}
+ ``` 
+
+# Subscription Entity
+
+
+   ``` http request 
+    ### get subscription by subscription ID
+    GET http://localhost:8080/api/subscription/{{subscriptionId}}
+    ### create subscription for a give quotation
+    POST http://localhost:8080/api/quotation/{{quotationId}}/subscription
+    ###  get a subscription by quotation ID
+    GET http://localhost:8080/api/quotation/{{quotationId}}/subscription
+    ### get subscription
+    GET http://localhost:8080/api/subscription
+   ```
+# Quotation Entity
+
+``` http request
+    ### get quotation by customer id
+    GET http://localhost:8080/api/customers/{{customerId}}/quotation
+
+    ### get quotation by ID
+    GET http://localhost:8080/api/quotations/{{id}}
+    
+    ### create quotation for a given customer
+    POST http://localhost:8080/api/customers/{{customerId}}/quotation
+    
+    ### update quotation
+    PUT http://localhost:8080/api/quotations/{{quotationId}}
+    
+    ### delete quotation by ID
+    DELETE http://localhost:8080/api/quotations/{{quotaionId}}
+    
+    ### delete quotation by customer ID
+    DELETE http://localhost:8080/api/customers/{{customerId}}/quotation
+```
 
 ## H2 Database
 
@@ -164,4 +218,4 @@ This micro-service uses an embedded H2 database. You can access the database con
 
 ## Conclusion
 
-This micro-service provides endpoints for creating and managing Quotations and Subscriptions, as well as updating Customer attributes. It is built using Spring Boot framework and H2 database, and can be run locally without any external dependencies.
+This Micro service provides endpoints for creating and managing Quotations and Subscriptions, as well as updating Customer attributes. It is built using Spring Boot framework and H2 database, and can be run locally without any external dependencies.
