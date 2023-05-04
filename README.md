@@ -174,7 +174,7 @@ To run this micro-service locally, follow these steps:
 # Subscription Entity
 
 
-   ``` http request 
+   ``` 
     ### get subscription by subscription ID
     GET http://localhost:8080/api/subscription/{{subscriptionId}}
     ### create subscription for a give quotation
@@ -183,10 +183,10 @@ To run this micro-service locally, follow these steps:
     GET http://localhost:8080/api/quotation/{{quotationId}}/subscription
     ### get subscription
     GET http://localhost:8080/api/subscription
-
+```
 # Quotation Entity
 
-``` http request
+``` 
     ### get quotation by customer id
     GET http://localhost:8080/api/customers/{{customerId}}/quotation
 
