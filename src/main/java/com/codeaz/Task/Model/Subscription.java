@@ -2,6 +2,8 @@ package com.codeaz.Task.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -32,6 +34,7 @@ public class Subscription implements Serializable {
     /**
      The quotation that the subscription belongs to
      */
+    @NotNull(message = "Quotation is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quotation_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -40,11 +43,15 @@ public class Subscription implements Serializable {
     /**
      The start date of the subscription
      */
+    @NotNull(message = "Start date is required")
+    @FutureOrPresent(message = "Start date must be in the present or future")
     @Column(name = "start_date")
     private LocalDate startDate;
     /**
      The date until which the subscription is valid
      */
+    @NotNull(message = "Valid until date is required")
+    @FutureOrPresent(message = "Valid until date must be in the present or future")
     @Column(name = "valid_until")
     private LocalDate validUntil;
 

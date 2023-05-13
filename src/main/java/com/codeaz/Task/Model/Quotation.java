@@ -2,6 +2,9 @@ package com.codeaz.Task.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -34,17 +37,22 @@ public class Quotation implements Serializable {
     /**
      * Beginning date of the insurance policy.
      */
+    @NotNull(message = "Beginning of insurance is required")
     @Column(name = "beginning_of_insurance")
     private LocalDate beginningOfInsurance;
     /**
      * The amount that the policy is insured for.
      */
+    @NotNull(message = "Insured amount is required")
+    @Positive(message = "Insured amount must be a positive value")
     @Column(name = "insured_amount")
     private BigDecimal insuredAmount;
 
     /**
      * The date that the mortgage was signed.
      */
+    @NotNull(message = "Date of signing mortgage is required")
+    @Future(message = "Date of signing mortgage must be in the future")
     @Column(name = "date_of_signing_mortgage")
     private LocalDate dateOfSigningMortgage;
     /**

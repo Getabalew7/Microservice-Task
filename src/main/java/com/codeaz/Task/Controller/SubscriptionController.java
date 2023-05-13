@@ -7,10 +7,15 @@ import com.codeaz.Task.Model.Subscription;
 import com.codeaz.Task.Service.Quotation.QuotationServiceImplementation;
 import com.codeaz.Task.Service.Subscription.SubscriptionService;
 import com.codeaz.Task.Service.Subscription.SubscriptionServiceImplementation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +46,7 @@ public class SubscriptionController {
      * @return A ResponseEntity containing the Subscription object and the HTTP status code.
      */
   @GetMapping("/subscription/{subscriptionId}")
-  public ResponseEntity<Subscription> getSubscriptionById(@PathVariable(value="subscriptionId") Long id){
+  public ResponseEntity<Subscription> getSubscriptionById(@PathVariable(value="subscriptionId") @Min(1) Long id){
       return new ResponseEntity<>(subscriptionServiceImplementation.getSubscriptionById(id), HttpStatus.OK);
   }
     /**
@@ -51,8 +56,8 @@ public class SubscriptionController {
      * @return A ResponseEntity containing the created Subscription object and the HTTP status code.
      */
   @PostMapping("quotation/{quotationId}/subscription")
-    public ResponseEntity<Subscription> CreateSubscription(@PathVariable(value="quotationId") Long quotationId,
-                                                           @RequestBody Subscription subscription){
+    public ResponseEntity<Subscription> CreateSubscription(@PathVariable(value="quotationId") @Min(1) Long quotationId,
+                                                           @Valid @RequestBody Subscription subscription){
       if(! quotationServiceImplementation.quotationExist(quotationId)){
           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
       }
@@ -66,7 +71,7 @@ public class SubscriptionController {
      * @return A ResponseEntity containing the list of Subscription objects and the HTTP status code.
      */
     @GetMapping("/quotation/{quotationId}/subscription")
-    public ResponseEntity<List<Subscription>> getSubscriptionByQuotationId(@PathVariable(value="quotationId") Long quotationId){
+    public ResponseEntity<List<Subscription>> getSubscriptionByQuotationId(@PathVariable(value="quotationId") @Min(1) Long quotationId){
       if(!quotationServiceImplementation.quotationExist(quotationId)){
           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
       }
@@ -80,5 +85,24 @@ public class SubscriptionController {
     @GetMapping("/subscription")
     public ResponseEntity<List<Subscription>> getAllSubscription(){
       return new ResponseEntity<>(subscriptionServiceImplementation.getAllSubscription(),HttpStatus.OK);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        int len= ex.getBindingResult().getFieldErrors().size();
+        StringBuilder errMsg = new StringBuilder();
+        for(int i=0;i<len;i++){
+            errMsg.append(ex.getBindingResult().getFieldErrors().get(i));
+            if(i<len-1){
+                errMsg.append(",");
+            }
+        }
+        ObjectMapper objectMapper = new ObjectMapper();;
+        try{
+            String jsonErrorMessage= objectMapper.writeValueAsString(errMsg);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonErrorMessage);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

@@ -5,10 +5,15 @@ import com.codeaz.Task.Model.Quotation;
 import com.codeaz.Task.Repository.QuotationRepository;
 import com.codeaz.Task.Service.Customer.CustomerServiceImplementation;
 import com.codeaz.Task.Service.Quotation.QuotationServiceImplementation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,8 +85,8 @@ public class QuotationController {
      */
 
     @PutMapping("/quotations/{quotationId}")
-   public ResponseEntity<Quotation> updateQuotation(@PathVariable(value = "quotationId") Long quotaionId,
-                                                    @RequestBody Quotation newQuotaion){
+   public ResponseEntity<Quotation> updateQuotation(@PathVariable(value = "quotationId") @Min(1) Long quotaionId,
+                                                   @Valid @RequestBody Quotation newQuotaion){
         if(! quotationServiceImplementation.quotationExist(quotaionId)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -96,7 +101,7 @@ public class QuotationController {
      @return a ResponseEntity with a status code indicating the success or failure of the operation
      */
     @DeleteMapping("/quotations/{quotaionId}")
-   public ResponseEntity<Quotation> deleteQuotationById(@PathVariable (value="quotaionId") Long quotaionId){
+   public ResponseEntity<Quotation> deleteQuotationById(@PathVariable (value="quotaionId") @Min(1) Long quotaionId){
         return new ResponseEntity<>(quotationServiceImplementation.deleteQuotation(quotaionId),HttpStatus.OK);
     }
     /**
@@ -105,10 +110,28 @@ public class QuotationController {
      @return a ResponseEntity with a status code indicating the success or failure of the operation
      */
     @DeleteMapping("/customers/{customerId}/quotation")
-    public ResponseEntity<List<Quotation>> deleteQuotationByCustomerId(@PathVariable (value="customerId") Long customerId){
+    public ResponseEntity<List<Quotation>> deleteQuotationByCustomerId(@PathVariable (value="customerId") @Min(1) Long customerId){
        if(! customerServiceImplementation.customerExists(customerId)){
            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
        }
         return new ResponseEntity<>(quotationServiceImplementation.deleteQoutationByCustomerId(customerId),HttpStatus.OK);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        int len= ex.getBindingResult().getFieldErrors().size();
+        StringBuilder errMsg = new StringBuilder();
+        for(int i=0;i<len;i++){
+            errMsg.append(ex.getBindingResult().getFieldErrors().get(i));
+            if(i<len-1){
+                errMsg.append(",");
+            }
+        }
+        ObjectMapper objectMapper = new ObjectMapper();;
+        try{
+            String jsonErrorMessage= objectMapper.writeValueAsString(errMsg);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonErrorMessage);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
