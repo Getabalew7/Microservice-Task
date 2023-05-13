@@ -215,6 +215,10 @@ This micro-service uses an embedded H2 database. You can access the database con
 - User Name: `sa`
 - Password: (leave blank)
 
+## Project Module  Diagram
+
+![img.png](img.png)
+
 ## Conclusion
 
 This Micro service provides endpoints for creating and managing Quotations and Subscriptions, as well as updating Customer attributes. It is built using Spring Boot framework and H2 database, and can be run locally without any external dependencies.

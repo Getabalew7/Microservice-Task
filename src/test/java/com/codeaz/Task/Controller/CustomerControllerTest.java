@@ -109,7 +109,7 @@ class CustomerControllerTest {
         when(customerService.updateCustomer(updatedCustomer)).thenReturn(updatedCustomer);
 
         // Act
-        ResponseEntity<Customer> response = customerController.updatecustomer(1L, updatedCustomer);
+        ResponseEntity<Customer> response = customerController.updateCustomer(1L, updatedCustomer);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
