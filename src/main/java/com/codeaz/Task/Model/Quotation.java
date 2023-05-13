@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -52,7 +53,7 @@ public class Quotation implements Serializable {
      * The date that the mortgage was signed.
      */
     @NotNull(message = "Date of signing mortgage is required")
-    @Future(message = "Date of signing mortgage must be in the future")
+    @FutureOrPresent(message = "Date of signing mortgage must be in the Present or future")
     @Column(name = "date_of_signing_mortgage")
     private LocalDate dateOfSigningMortgage;
     /**
